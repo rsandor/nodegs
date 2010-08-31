@@ -6,7 +6,7 @@
 */
 
 var sys = require('sys')
-  , nodegs = require('./lib/nodegs')
+  , nodegs = require('./lib/nodegs');
 
 // Check for server version information flag
 if (process.argv.length > 1 && process.argv[1] == '--version') {
@@ -14,4 +14,4 @@ if (process.argv.length > 1 && process.argv[1] == '--version') {
 }
 
 // Initialize the game server
-nodegs.Server.init(8080);
+var gameServer = new nodegs.GameServer(8080);
