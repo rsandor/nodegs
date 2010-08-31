@@ -14,16 +14,16 @@
     
     <script type="text/javascript" charset="utf-8">
       $(function() {
-        var socket = Client.connect();
+        Client.connect();
         
-        socket.on('message', function(data) {
-          console.log("[incoming]: " + data)
-          $('#from').append('<p>Reversed: ' + data + '</p>');
+        Client.message(function() {
+          console.log("[incoming]: " + data);
+          $('#from').append('<p>' + data + '</p>');
         });
         
         $('#message').keydown(function(e) {
           if (e.keyCode == 13) {
-            socket.send($('#message').val());
+            Client.send($('#message').val());
             $('#message').val('');
           }
         });
