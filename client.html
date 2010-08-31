@@ -10,37 +10,24 @@
     
     <script type="text/javascript" charset="utf-8" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="lib/socket.io/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8" src="lib/client.js"></script>
+    
     <script type="text/javascript" charset="utf-8">
-      var socket;
-      
-      function onMessage(data) {
-        console.log("[incoming]: " + data)
-        $('#from').append('<p>Reversed: ' + data + '</p>');
-      }
-    
-      function send(msg) {
-        socket.send(msg);
-      }
-      
-      function connect(callback) {
-        // Client websocket connect code
-        io.setPath("/lib/");
-        socket = new io.Socket('localhost', {port:8080, transports:['websocket', 'flashsocket', 'htmlfile', 'xhr-multipart', 'xhr-polling']});
-        socket.connect();
-        socket.on('message', function(data){
-            onMessage(data);
-        });
-      }
-    
       $(function() {
-        connect();
+        var socket = Client.connect();
+        
+        socket.on('message', function(data) {
+          console.log("[incoming]: " + data)
+          $('#from').append('<p>Reversed: ' + data + '</p>');
+        });
+        
         $('#message').keydown(function(e) {
           if (e.keyCode == 13) {
-            send($('#message').val());
+            socket.send($('#message').val());
             $('#message').val('');
           }
         });
-      })
+      });
     </script>
   </body>
 </html>
