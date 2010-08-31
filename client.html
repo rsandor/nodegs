@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>nodegs client - By Ryan Sandor Richards</title>
+  </head>
+  <body>
+    <h1>Client</h1>
+    <input type="text" id="message">
+    <div id="from" style="border: 1px solid red"></div>
+    
+    <script type="text/javascript" charset="utf-8" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="lib/socket.io/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      var socket;
+      
+      function onMessage(data) {
+        console.log("[incoming]: " + data)
+        $('#from').append('<p>Reversed: ' + data + '</p>');
+      }
+    
+      function send(msg) {
+        socket.send(msg);
+      }
+      
+      function connect(callback) {
+        // Client websocket connect code
+        io.setPath("/lib/");
+        socket = new io.Socket('localhost', {port:8080, transports:['websocket', 'flashsocket', 'htmlfile', 'xhr-multipart', 'xhr-polling']});
+        socket.connect();
+        socket.on('message', function(data){
+            onMessage(data);
+        });
+      }
+    
+      $(function() {
+        connect();
+        $('#message').keydown(function(e) {
+          if (e.keyCode == 13) {
+            send($('#message').val());
+            $('#message').val('');
+          }
+        });
+      })
+    </script>
+  </body>
+</html>
