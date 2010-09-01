@@ -24,10 +24,11 @@ else if (process.argv.length > 1 && process.argv[2] == '--help' || process.argv[
 else {
   // Initialize the game server
   var server = new nodegs.GameServer();
-  var broadcaster = new nodegs.Broadcaster();
+  var router = new nodegs.Router();
   
-  // Have the broadcaster listen for incoming events 
-  server.on('event', broadcaster.route);
+  // Have the broadcaster listen for incoming connections and events
+  server.on('event', router.route);
+  server.on('connect', router.connect);
   
   // Begin listening for incoming game events
   server.listen(8080);
